@@ -6,6 +6,6 @@
 <form action="{% url 'register' %}" method="post" style="width: 500px; margin: auto;">
     {% csrf_token %}
     {{ form | crispy }}
-    <button type="submit" class="btn btn-warning">submit</button>
+    <button type="submit" class="btn btn-warning">Register</button>
 </form>
 {% endblock %}
