@@ -30,9 +30,11 @@
                     <td>{{ category.created_at }}</td>
                     <td>{{ category.updated_at }}</td>
                     <td>
-                        <a href="{% url 'edit_category' category.id %}" class="text-success"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'edit_category' category.id %}" class="text-success"><i
+                                class="fas fa-edit"></i></a>
                         &nbsp;
-                        <a href="{% url 'delete_category' category.id %}" class="text-danger"><i class="fas fa-trash"></i></a>
+                        <a href="{% url 'delete_category' category.id %}" class="text-danger"><i
+                                class="fas fa-trash"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
