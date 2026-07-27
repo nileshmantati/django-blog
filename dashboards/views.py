@@ -16,21 +16,25 @@ def dashboard(request):
     }
     return render(request,'dashboard/dashboard.html',context)
 
+@login_required(login_url='login')
 def categories(request):
     return render(request,'dashboard/categories.html')
 
+@login_required(login_url='login')
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('categories')
-    form = CategoryForm()
+    else:
+        form = CategoryForm()
     context = {
         'form': form,
     }
     return render(request,'dashboard/add_category.html',context)
 
+@login_required(login_url='login')
 def edit_category(request,pk):
     category = get_object_or_404(Category,pk=pk)
     if request.method == 'POST':
@@ -38,18 +42,21 @@ def edit_category(request,pk):
         if form.is_valid():
             form.save()
             return redirect('categories')
-    form = CategoryForm(instance=category)
+    else:
+        form = CategoryForm(instance=category)
     context = {
         'form': form,
         'category':category,
     }
     return render(request,'dashboard/edit_category.html',context)
 
+@login_required(login_url='login')
 def delete_category(request,pk):
     category = get_object_or_404(Category,pk=pk)
     category.delete()
     return redirect('categories')
 
+@login_required(login_url='login')
 def posts(request):
     posts = Blog.objects.all()
     context = {
@@ -57,6 +64,7 @@ def posts(request):
     }
     return render(request,'dashboard/posts.html',context)
 
+@login_required(login_url='login')
 def add_post(request):
     if request.method == 'POST':
         form = BlogPostForm(request.POST,request.FILES)
@@ -72,13 +80,15 @@ def add_post(request):
         else:
             print('not valid')
             print(form.errors)
-    form = BlogPostForm()
+    else:
+        form = BlogPostForm()
     context= {
         'form':form,
     }
 
     return render(request,'dashboard/add_post.html',context)
 
+@login_required(login_url='login')
 def edit_post(request,pk):
     post = get_object_or_404(Blog,pk=pk)
     if request.method == 'POST':
@@ -87,21 +97,24 @@ def edit_post(request,pk):
             post = form.save()
             title = form.cleaned_data['title']
             post.slug = slugify(title) + '-'+str(post.id)
-            post = form.save()
+            post.save()
             return redirect('posts')
-    form = BlogPostForm(instance=post)
+    else:
+        form = BlogPostForm(instance=post)
     context = {
         'form':form,
         'post':post,
     }
     return render(request,'dashboard/edit_post.html',context)
 
+@login_required(login_url='login')
 def delete_post(request,pk):
     post = get_object_or_404(Blog,pk=pk)
     post.delete() 
     return redirect('posts')
 
 
+@login_required(login_url='login')
 def users(request):
     users = User.objects.all()
     context = {
@@ -109,6 +122,7 @@ def users(request):
     }
     return render(request,'dashboard/users.html',context)
 
+@login_required(login_url='login')
 def add_user(request):
     if request.method == 'POST':
         form = AddUserForm(request.POST)
@@ -117,12 +131,14 @@ def add_user(request):
             return redirect('users')
         else:
             print(form.errors)
-    form = AddUserForm()
+    else:
+        form = AddUserForm()
     context= {
         'form':form,
     }
     return render(request,'dashboard/add_user.html',context)
 
+@login_required(login_url='login')
 def edit_user(request,pk):
     user = get_object_or_404(User,pk=pk)
     if request.method == 'POST':
@@ -130,13 +146,15 @@ def edit_user(request,pk):
         if form.is_valid():
             form.save()
             return redirect('users')
-    form = EditUserForm(instance=user)
+    else:
+        form = EditUserForm(instance=user)
     context= {
         'form':form,
         'user':user,
     }
     return render(request,'dashboard/edit_user.html',context)
 
+@login_required(login_url='login')
 def delete_user(request,pk):
     user = get_object_or_404(User,pk=pk)
     user.delete() 

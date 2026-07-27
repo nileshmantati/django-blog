@@ -1,18 +1,15 @@
 from django.shortcuts import render ,redirect
 from blogs.models import Blog
 from assignments.models import About
-from .forms import RegistrionForm
+from .forms import RegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
 
 def home(request):
-    featured_posts = Blog.objects.filter(is_featured=True)
+    featured_posts = Blog.objects.filter(is_featured=True, status='published')
     posts = Blog.objects.filter(is_featured=False,status='published')
     
-    try:
-        about = About.objects.get()
-    except:
-        about = None
+    about = About.objects.first()
     context = {
         'featured_posts' : featured_posts,
         'posts': posts,
@@ -22,14 +19,14 @@ def home(request):
 
 def register(request):
     if request.method == 'POST':
-        form = RegistrionForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('register')
+            return redirect('login')
         else:
             print(form.errors)
     else:
-        form = RegistrionForm()
+        form = RegistrationForm()
     context = {
         'form':form,
     }
